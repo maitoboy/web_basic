@@ -10,7 +10,7 @@ public static void main(String[] args) {
 // データベース接続情報を格納する変数
 Connection conn = null;
 
-// JDBCドライバの読み込み
+// JDBCドライバの読み込みを行う
 try {
   // postgresSQLのJDBCドライバを読みこみ
   Class.forName("org.postgresql.Driver");

@@ -54,7 +54,7 @@ public class AccountDao {
  				accountinfo.setName(rs.getString("name"));
  				list.add(accountinfo);
  			}
- 			System.out.print(list);
+ 			
  		}catch(Exception e){
  			throw new IllegalStateException(e);
  		}finally{
@@ -68,4 +68,161 @@ public class AccountDao {
  		}
  		return list;
  	}
- }
+ 	
+ 	
+ 	
+ 	
+ 	//データベースから全てのアカウント情報の検索を行うメソッド
+ 	public ArrayList<Accountinfo> search(String id){
+ 		//変数宣言
+ 		Connection con = null;
+ 		Statement  smt = null;
+ 
+ 		//return用オブジェクトの生成
+ 		ArrayList<Accountinfo> list = new ArrayList<Accountinfo>();
+ 
+ 		//SQL文
+ 		String sql = "SELECT * FROM staff WHERE id LIKE '%" + id + "%'";
+ 
+ 		try{
+ 			con = getConnection();
+ 			smt = con.createStatement();
+ 
+ 			//SQLをDBへ発行
+ 			ResultSet rs = smt.executeQuery(sql);
+ 
+ 			//検索結果を配列に格納
+ 			while(rs.next()){
+ 				Accountinfo accountinfo =new Accountinfo();
+ 				accountinfo.setId(rs.getString("id"));
+ 				accountinfo.setStaffid(rs.getString("staffid"));
+ 				accountinfo.setName(rs.getString("name"));
+ 				list.add(accountinfo);
+ 			}
+ 
+ 		}catch(Exception e){
+ 			throw new IllegalStateException(e);
+ 		}finally{
+ 			//リソースの開放
+ 			if(smt != null){
+ 				try{smt.close();}catch(SQLException ignore){}
+ 			}
+ 			if(con != null){
+ 				try{con.close();}catch(SQLException ignore){}
+ 			}
+ 		}
+ 		return list;
+ 	}
+ 
+
+ 	 
+ 	 	//データベースへデータを登録するメソッド
+ 	 	public int insert(Accountinfo accountinfo){
+ 	 		//変数宣言
+ 	 		System.out.print("a");
+ 	 		Connection con = null;
+ 	 		Statement  smt = null;
+ 	 
+ 	 		//return用変数
+ 	 		int count = 0;
+ 	 
+ 	 		//SQL文
+ 	 		String sql = "INSERT INTO staff VALUES('"
+ 	 					+ accountinfo.getId() + "','"
+ 	 					+ accountinfo.getStaffid() + "','"
+ 	 					+ accountinfo.getName() + "')";
+ 	 
+ 	 		try{
+ 	 			con = getConnection();
+ 	 			smt = con.createStatement();
+ 	 
+ 	 			//SQLをDBへ発行
+ 	 			count = smt.executeUpdate(sql);
+ 	 
+ 	 		}catch(Exception e){
+ 	 			throw new IllegalStateException(e);
+ 	 		}finally{
+ 	 			//リソースの開放
+ 	 			if(smt != null){
+ 	 				try{smt.close();}catch(SQLException ignore){}
+ 	 			}
+ 	 			if(con != null){
+ 	 				try{con.close();}catch(SQLException ignore){}
+ 	 			}
+ 	 		}
+ 	 		return count;
+ 	 }
+ 	 	
+ 	 
+ 	 	//データベースへデータを登録するメソッド
+ 	 	public int update(Accountinfo accountinfo){
+ 	 		//変数宣言
+ 	 		Connection con = null;
+ 	 		Statement  smt = null;
+ 	 
+ 	 		//return用変数
+ 	 		int count = 0;
+ 	 
+ 	 		//SQL文
+ 	 		String sql = "UPDATE staff SET "
+ 	 			+ "staffid = '" + accountinfo.getStaffid() + "', "
+ 	 			+ "name = '" + accountinfo.getName() + "' "
+ 	 			+ "WHERE id = '" + accountinfo.getId() + "'";
+ 	 
+ 	 		try{
+ 	 			con = getConnection();
+ 	 			smt = con.createStatement();
+ 	 
+ 	 			//SQLをDBへ発行
+ 	 			count = smt.executeUpdate(sql);
+ 	 
+ 	 		}catch(Exception e){
+ 	 			throw new IllegalStateException(e);
+ 	 		}finally{
+ 	 			//リソースの開放
+ 	 			if(smt != null){
+ 	 				try{smt.close();}catch(SQLException ignore){}
+ 	 			}
+ 	 			if(con != null){
+ 	 				try{con.close();}catch(SQLException ignore){}
+ 	 			}
+ 	 		}
+ 	 		return count;
+ 	 }
+ 	 	
+ 	 	
+ 	 	//データベースへデータを削除するメソッド
+ 	 	public int delete(String id){
+ 	 		//変数宣言
+ 	 		Connection con = null;
+ 	 		Statement  smt = null;
+ 	 
+ 	 		//return用変数
+ 	 		int count = 0;
+ 	 
+ 	 		//SQL文
+ 	 		String sql = "DELETE FROM staff WHERE id = '" + id + "'";
+ 	 
+ 	 		try{
+ 	 			con = getConnection();
+ 	 			smt = con.createStatement();
+ 	 
+ 	 			//SQLをDBへ発行
+ 	 			count = smt.executeUpdate(sql);
+ 	 
+ 	 		}catch(Exception e){
+ 	 			throw new IllegalStateException(e);
+ 	 		}finally{
+ 	 			//リソースの開放
+ 	 			if(smt != null){
+ 	 				try{smt.close();}catch(SQLException ignore){}
+ 	 			}
+ 	 			if(con != null){
+ 	 				try{con.close();}catch(SQLException ignore){}
+ 	 			}
+ 	 		}
+ 	 		return count;
+ 	 	}
+ 	 	
+}
+ 	
